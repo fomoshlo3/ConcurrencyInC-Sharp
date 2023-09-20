@@ -1,21 +1,16 @@
-﻿
-using AsyncBasics.Con._1_Pausing_for_a_period_of_time;
+﻿//-----------------------------------------------------------------------
+//     Author:  Hannes Kasel
+//     Date:    2023/09/
+//-----------------------------------------------------------------------
 
-namespace AsyncBasics.Con
+internal class Program
 {
-    /* 
-     * Author: Hannes Kasel
-     * Date: 2023/09/19
-     * Title: Concurrency in C Sharp
-     * Description: Just a in-code read along repo, for internalizing principles teached in 
-     *  O'Reilly's 'Concurrency in C-Sharp Cookbook'.
-     * Version: 0.5
-     */
-    internal static class Program
+    /// <summary>
+    /// Basically just a read along repo
+    /// </summary>
+    /// <param name="args"></param>
+    private static async void Main(string[] args)
     {
-        internal static void Main(string[] args)
-        {
-        }
-
+        
     }
 }

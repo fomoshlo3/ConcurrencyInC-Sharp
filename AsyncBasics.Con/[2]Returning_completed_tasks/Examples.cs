@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AsyncBasics.Con._2_Returning_completed_tasks
 {
@@ -21,14 +18,42 @@ namespace AsyncBasics.Con._2_Returning_completed_tasks
     /// <b>Solution:</b> Use <see cref="Task.FromResult{TResult}(TResult)"/> to create and return a 
     /// new <see cref="Task{TResult}"/> that is already completed with the specified value.
     /// </para>
+    /// 
+    /// <b>Discussion: </b>If you are implementing an asynchronous Interface with synchronous code, avoid any form
+    /// of blocking. It's not natural for an asynchronous method to block and then return a completed task.
+    /// If an asynchronous method blocks, it prevents the calling thread from starting other tasks, which interferes with
+    /// concurrency and may even cause a deadlock.
     /// </summary>
-    public class Examples
+    public class Examples : IMyAsyncInterface
     {
+        public Task<int> GetValueAsync(int result = 13)
+        {
+            return Task.FromResult(result);
+        }
 
+        /// <summary>
+        /// Helper method for synchronous task with a 'unsuccessful' result using <see cref="TaskCompletionSource"/>.
+        /// Conceptually <see cref="Task.FromResult{TResult}(TResult)"/> 
+        /// is just a shorthand for <seealso cref="TaskCompletionSource"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>A <seealso cref="Task{TResult}"/> with a  <see cref="NotImplementedException"/> as result.</returns>
+        public static Task<T> NotImplementedAsync<T>()
+        {
+            var tcs = new TaskCompletionSource<T>();
+            tcs.SetException(new NotImplementedException());
+            return tcs.Task;
+        }
+
+        /// <summary>
+        /// If you regularly use <see cref="Task.FromResult{TResult}(TResult)"/> with the same value, consider caching
+        /// the actual task to avoid creating extra instances that will have to be garbage-collected.
+        /// </summary>
+        private static readonly Task<int> zeroTask = Task.FromResult(0);
     }
 
     public interface IMyAsyncInterface
     {
-        Task<int> GetValueAsync();
+        Task<int> GetValueAsync(int result);
     }
 }
